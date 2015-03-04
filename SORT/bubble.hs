@@ -1,9 +1,16 @@
 import Data.Maybe (fromMaybe)
 import Control.Monad
 
+bubbleSortBy ::  (a -> a -> Bool) -> [a] -> [a]
+bubbleSortBy f as = case innerSort $ reverse as of
+                         Nothing -> as
+                         Just v  -> let (x:xs) = reverse v
+                                   in x : bubbleSortBy f xs
+    where innerSort (a:b:cs) = if b `f` a
+                                  then liftM (a:) $ innerSort (b:cs)
+                                  else Just $ b : fromMaybe (a:cs)
+                                                (innerSort $ a:cs)
+          innerSort _        = Nothing
+ 
 bsort :: Ord a => [a] -> [a]
-bsort s = maybe s bsort $ _bsort s
-  where _bsort (x:x2:xs) = if x > x2
-            then Just $ x2 : fromMaybe (x:xs) (_bsort $ x:xs)
-            else liftM (x:) $ _bsort (x2:xs)
-        _bsort _         = Nothing
+bsort =  bubbleSortBy (<)
