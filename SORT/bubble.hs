@@ -1,7 +1,9 @@
+import Data.Maybe (fromMaybe)
+import Control.Monad
+
 bsort :: Ord a => [a] -> [a]
-bsort s = case _bsort s of
-               t | t == s    -> t
-                 | otherwise -> bsort t
-  where _bsort (x:x2:xs) | x > x2    = x2:(_bsort (x:xs))
-                         | otherwise = x:(_bsort (x2:xs))
-        _bsort s = s
+bsort s = maybe s bsort $ _bsort s
+  where _bsort (x:x2:xs) = if x > x2
+            then Just $ x2 : fromMaybe (x:xs) (_bsort $ x:xs)
+            else liftM (x:) $ _bsort (x2:xs)
+        _bsort _         = Nothing
