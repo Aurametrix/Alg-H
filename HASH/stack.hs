@@ -1,18 +1,22 @@
-type Stack a = [a]
+import Control.Monad.State
  
-create :: Stack a
-create = []
+type Stack a b = State [a] b
  
-push :: a -> Stack a -> Stack a
-push = (:)
+push :: a -> Stack a ()
+push = modify . (:)
  
-pop :: Stack a -> (a, Stack a)
-pop []     = error "Stack empty"
-pop (x:xs) = (x,xs)
+pop :: Stack a a
+pop = do
+    nonEmpty
+    x <- peek
+    modify tail
+    return x
  
-empty :: Stack a -> Bool
-empty = null
+empty :: Stack a Bool
+empty = gets null
  
-peek :: Stack a -> a
-peek []    = error "Stack empty"
-peek (x:_) = x
+peek :: Stack a a
+peek = nonEmpty >> gets head
+ 
+nonEmpty :: Stack a ()
+nonEmpty = empty >>= flip when (fail "Stack empty")
