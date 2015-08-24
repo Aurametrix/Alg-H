@@ -1,90 +1,60 @@
-import Control.Applicative ((<$>), (<*>))
-import Control.Monad (foldM, forM_)
-import Data.List ((\\), isInfixOf)
+import Control.Monad
+import Data.List
  
--- types
-data House = House
-    { color :: Color
-    , man   :: Man
-    , pet   :: Pet
-    , drink :: Drink
-    , smoke :: Smoke
-    }
-    deriving (Eq, Show)
+values :: (Bounded a, Enum a) => [[a]]
+values = permutations [minBound..maxBound]
  
-data Color = Red | Green | Blue | Yellow | White
-    deriving (Eq, Show, Enum, Bounded)
+data Nation = English   | Swede     | Dane  | Norwegian     | German
+    deriving (Bounded, Enum, Eq, Show)
+data Color  = Red       | Green     | White | Yellow        | Blue
+    deriving (Bounded, Enum, Eq, Show)
+data Pet    = Dog       | Birds     | Cats  | Horse         | Zebra
+    deriving (Bounded, Enum, Eq, Show)
+data Drink  = Tea       | Coffee    | Milk  | Beer          | Water
+    deriving (Bounded, Enum, Eq, Show)
+data Smoke  = PallMall  | Dunhill   | Blend | BlueMaster    | Prince
+    deriving (Bounded, Enum, Eq, Show)
  
-data Man = Eng | Swe | Dan | Nor | Ger
-    deriving (Eq, Show, Enum, Bounded)
+answers = do
+    color <- values
+    leftOf  color  Green       color White    -- 5
  
-data Pet = Dog | Birds | Cats | Horse | Zebra
-    deriving (Eq, Show, Enum, Bounded)
+    nation <- values
+    first   nation Norwegian                  -- 10
+    same    nation English     color Red      -- 2
+    nextTo  nation Norwegian   color Blue     -- 15
  
-data Drink = Coffee | Tea | Milk | Beer | Water
-    deriving (Eq, Show, Enum, Bounded)
+    drink <- values
+    middle  drink  Milk                       -- 9
+    same    nation Dane        drink Tea      -- 4
+    same    drink  Coffee      color Green    -- 6
  
-data Smoke = PallMall | Dunhill | Blend | BlueMaster | Prince
-    deriving (Eq, Show, Enum, Bounded)
+    pet <- values
+    same    nation Swede       pet   Dog      -- 3
  
+    smoke <- values
+    same    smoke  PallMall    pet   Birds    -- 7
+    same    color  Yellow      smoke Dunhill  -- 8
+    nextTo  smoke  Blend       pet   Cats     -- 11
+    nextTo  pet    Horse       smoke Dunhill  -- 12
+    same    nation German      smoke Prince   -- 14
+    same    smoke  BlueMaster  drink Beer     -- 13
+    nextTo  drink  Water       smoke Blend    -- 16
  
-main :: IO ()
+    return $ zip5 nation color pet drink smoke
+ 
+  where
+    same    xs x  ys y  =  guard $ (x, y) `elem` zip xs ys
+    leftOf  xs x  ys y  =  same  xs x  (tail ys) y
+    nextTo  xs x  ys y  =  leftOf  xs x  ys y  `mplus`
+                           leftOf  ys y  xs x
+    middle  xs x        =  guard $ xs !! 2 == x
+    first   xs x        =  guard $ head xs == x
+ 
 main = do
-  forM_ solutions $ \x -> mapM_ print (reverse x)
-                       >> putStrLn "----"
-  putStrLn "No More Solutions"
- 
- 
-solutions :: [[House]]
-solutions = filter (and . postChecks) $ foldM next [] [1..5]
-    where
-      next xs pos = [x:xs | x <- iterHouse xs, and $ checks pos x]
- 
- 
-iterHouse :: [House] -> [House]
-iterHouse xs =
-    House <$> new color <*> new man <*> new pet <*> new drink <*> new smoke
-    where
-      new getter = [minBound ..] \\ map getter xs
- 
- 
--- immediate checks
-checks :: Int -> House -> [Bool]
-checks pos house =
-    [ man   `is` Eng    <=> color `is` Red              --  2
-    , man   `is` Swe    <=> pet   `is` Dog              --  3
-    , man   `is` Dan    <=> drink `is` Tea              --  4
-    , color `is` Green  <=> drink `is` Coffee           --  6
-    , pet   `is` Birds  <=> smoke `is` PallMall         --  7
-    , color `is` Yellow <=> smoke `is` Dunhill          --  8
-    , const (pos == 3)  <=> drink `is` Milk             --  9
-    , const (pos == 1)  <=> man   `is` Nor              -- 10
-    , drink `is` Beer   <=> smoke `is` BlueMaster       -- 13
-    , man   `is` Ger    <=> smoke `is` Prince           -- 14
-    ]
-    where
-      infix 4 <=>
-      p <=> q = p house == q house  -- both True or both False
- 
- 
--- final checks
-postChecks :: [House] -> [Bool]
-postChecks houses =
-    -- NOTE: list of houses is generated in reversed order
-    [ [White, Green] `isInfixOf` map color houses       --  5
-    , (smoke `is` Blend  ) `nextTo` (pet   `is` Cats )  -- 11
-    , (smoke `is` Dunhill) `nextTo` (pet   `is` Horse)  -- 12
-    , (color `is` Blue   ) `nextTo` (man   `is` Nor  )  -- 15
-    , (smoke `is` Blend  ) `nextTo` (drink `is` Water)  -- 16
-    ]
-    where
-      nextTo :: (House -> Bool) -> (House -> Bool) -> Bool
-      nextTo p q
-          | (_:x:_) <- dropWhile (not . match) houses = match x
-          | otherwise                                 = False
-          where
-            match x = p x || q x
- 
- 
-is :: Eq a => (House -> a) -> a -> House -> Bool
-getter `is` value = (== value) . getter
+    forM_ answers $ (\answer ->  -- for answer in answers:
+      do
+        mapM_ print answer 
+        print [nation | (nation, _, Zebra, _, _) <- answer] 
+        putStrLn "" )
+    putStrLn "No more solutions!"
