@@ -1,11 +1,12 @@
-import Control.Monad (foldM)
-import Data.List ((\\))
+import Data.List (nub, permutations)
  
-main :: IO ()
-main = mapM_ print $ queens 8
+-- checks if queens are on the same diagonal
+-- with [0..] we place each queen on her own row
+check f = length . nub . zipWith f [0..]
  
-queens :: Int -> [[Int]]
-queens n = foldM f [] [1..n]
-    where
-      f qs _ = [q:qs | q <- [1..n] \\ qs, q `notDiag` qs]
-      q `notDiag` qs = and [abs (q - qi) /= i | (qi,i) <- qs `zip` [1..]]
+-- filters out results where 2 or more queens are on the same diagonal
+-- with [0..n-1] we place each queeen on her own column
+generate n = filter (\x -> check (+) x == n && check (-) x == n) $ permutations [0..n-1]
+ 
+-- 8 is for "8 queens"
+main = print $ generate 8
