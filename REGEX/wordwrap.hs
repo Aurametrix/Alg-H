@@ -1,4 +1,6 @@
-ss = "In olden times when wishing still helped one, there lived a king"
+import Data.List
+
+teststring = "In olden times when wishing still helped one, there lived a king"
    ++"whose daughters were all beautiful, but the youngest was so beautiful"
    ++"that the sun itself, which has seen so much, was astonished whenever"
    ++"it shone in her face.  Close by the king's castle lay a great dark"
@@ -8,16 +10,12 @@ ss = "In olden times when wishing still helped one, there lived a king"
    ++"took a golden ball, and threw it up on high and caught it, and this"
    ++"ball was her favorite plaything."
  
-wordwrap maxlen = (wrap_ 0) . words where
-	wrap_ _ [] = "\n"
-	wrap_ pos (w:ws)
-		-- at line start: put down the word no matter what
-		| pos == 0 = w ++ wrap_ (pos + lw) ws
-		| pos + lw + 1 > maxlen = '\n':wrap_ 0 (w:ws)
-		| otherwise = " " ++ w ++ wrap_ (pos + lw + 1) ws
-		where lw = length w
+wwrap'' _ [] = []
+wwrap'' i ss = (\(a,b) -> a : wwrap'' i b) 
+	$ last . filter ((<=i) . length . unwords . fst) 
+	$ zip (inits ss) (tails ss)
  
-main = do
-	putStr $ wordwrap 72 ss
-	putStr "\n"
-	putStr $ wordwrap 32 ss
+wwrap :: Int -> String -> String
+wwrap i = unlines . map unwords . wwrap'' i . words . concat . lines
+ 
+main = putStrLn $ wwrap 80 teststring
