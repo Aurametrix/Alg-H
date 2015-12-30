@@ -1,5 +1,7 @@
-count 0 _ = 1
-count _ [] = 0
-count x (c:coins) = sum [ count (x - (n * c)) coins | n <- [0..(quot x c)] ]
+count = foldr addCoin (1:repeat 0)
+	where addCoin c oldlist = newlist
+		where newlist = (take c oldlist) ++ zipWith (+) newlist (drop c oldlist)
  
-main = print (count 100 [1, 5, 10, 25])
+main = do
+	print (count [25,10,5,1] !! 100)
+	print (count [100,50,25,10,5,1] !! 100000)
