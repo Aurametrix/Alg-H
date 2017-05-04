@@ -21,6 +21,11 @@ Haskell is a *lazy, functional* programming language created in the late 1980s
 
 -   One major downside, however, is that reasoning about time and space
     usage becomes much more complicated!
+    
+    
++ [why it's worth learning - 2013](https://spin.atomicobject.com/2013/03/05/why-haskell/)
++ [why not worth using](https://metarabbit.wordpress.com/2017/05/02/i-tried-haskell-for-5-years-and-heres-how-it-was/)  see also [YN comments](https://news.ycombinator.com/item?id=14266462)
+
 
 This Java/C-like program: 
         int acc = 0;
