@@ -18,6 +18,9 @@ Haskell is a *lazy, functional* programming language created in the late 1980s
 
 -   It enables a more compositional programming style (see *wholemeal
     programming* below).
+    
+### Projects
++ [Top SW projects written in Haskell](https://serokell.io/blog/top-software-written-in-haskell)
 
 -   One major downside, however, is that reasoning about time and space
     usage becomes much more complicated!
