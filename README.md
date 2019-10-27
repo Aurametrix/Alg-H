@@ -30,7 +30,10 @@ Haskell is a *lazy, functional* programming language created in the late 1980s
 + [why not worth using](https://metarabbit.wordpress.com/2017/05/02/i-tried-haskell-for-5-years-and-heres-how-it-was/)  see also [YN comments](https://news.ycombinator.com/item?id=14266462)
 + [HLearn: A Machine Learning Library](https://izbicki.me/public/papers/tfp2013-hlearn-a-machine-learning-library-for-haskell.pdf)
 + [Deep Learning library](https://github.com/HuwCampbell/grenade)
-+ [HAsjell fan site](http://www-cs-students.stanford.edu/~blynn/haskell/)
++ [Haskell fan site](http://www-cs-students.stanford.edu/~blynn/haskell/)
+
++ [Dex](https://github.com/google-research/dex-lang) - research language for array processing
+
 
 This Java/C-like program: 
         int acc = 0;
