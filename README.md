@@ -34,6 +34,8 @@ Haskell is a *lazy, functional* programming language created in the late 1980s
 
 + [Dex](https://github.com/google-research/dex-lang) - research language for array processing
 
++ [Hackett](https://github.com/lexi-lambda/hackett)
+
 
 This Java/C-like program: 
         int acc = 0;
