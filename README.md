@@ -38,7 +38,7 @@ Haskell is a *lazy, functional* programming language created in the late 1980s
 + [Semi-dynamic UIs generator](https://github.com/pkamenarsky/concur-static)
 
 + [Hackett](https://github.com/lexi-lambda/hackett)
-
++ [Programming R using Hackell](https://www.tweag.io/blog/2015-09-08-programming-r-at-native-speed-in-haskell/)
 
 
 
