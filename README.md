@@ -37,6 +37,7 @@ Haskell is a *lazy, functional* programming language created in the late 1980s
 + [Dex](https://github.com/google-research/dex-lang) - research language for array processing
 + [IHP live reloading](https://ihp.digitallyinduced.com/blog/2020-08-10-ihp-live-reloading.html)
 + [batteries-included haskell web framework](https://ihp.digitallyinduced.com/blog/c479f341-1374-496a-96d6-7af647005b21-ihp-1-0)
++ [Okapi](https://www.okapi.wiki/) - microweb framework
 
 + [Semi-dynamic UIs generator](https://github.com/pkamenarsky/concur-static)
 
