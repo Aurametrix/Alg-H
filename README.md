@@ -46,7 +46,8 @@ Haskell is a *lazy, functional* programming language created in the late 1980s
 + [Programming R using Hackell](https://www.tweag.io/blog/2015-09-08-programming-r-at-native-speed-in-haskell/)
 + [Haskell links, frameworks, libraries and software](https://github.com/krispo/awesome-haskell)
 + [Pure functions and strong types](https://www.simplehaskell.org/)
-+ [PL- Haskell](https://github.com/ed-o-saurus/PLHaskell) - "procedural language" extension of PostgreSQL allowing the execution of code in Haskell within SQL code. 
++ [PL- Haskell](https://github.com/ed-o-saurus/PLHaskell) - "procedural language" extension of PostgreSQL allowing the execution of code in Haskell within SQL code.
++ [Packed Data support in Haskell](https://arthi-chaud.github.io/posts/packed/)
 
 
 
